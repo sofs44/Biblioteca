@@ -25,25 +25,26 @@ navigation">
                     <a class="nav-link text-dark" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/livros/">Livros</a>
+                    <a class="nav-link text-dark" href="livros.html">Livros</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/reserva/">Reserva</a>
+                    <a class="nav-link text-dark" href="reserva.html">Reserva</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="cidade.html">Cidade</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/cidade/">Cidade</a>
+                    <a class="nav-link text-dark" href="autor.html">Autor</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/autor/">Autor</a>
+                    <a class="nav-link text-dark" href="editora.html">Editora</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/editor/">Editora</a>
+                    <a class="nav-link text-dark" href="genero.html">Genero</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/genero/">Genero</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="/leitor/">Leitor</a>
+                    <a class="nav-link text-dark" href="leitor.html">Leitor</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="/admin/">Administração</a>
@@ -58,6 +59,44 @@ navigation">
             <p class="lead">Seja Bem Vindo(A)</p>
         </div>
     </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Editora</th>
+                <th scope="col">Gênero</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Data Publicação</th>
+                <th scope="col">Status</th>
+                <th scope="col">Excluir</th>
+                <th scope="col">Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livro in livros %}
+            <tr>
+                <td>{{ livro.nome }}</td>
+                <td>{{ livro.autor }}</td>
+                <td>{{ livro.editora }}</td>
+                <td>
+                    {% for genero in livro.genero.all %}
+                    {{ genero.nome }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ livro.preco }}</td>
+                <td>{{ livro.data_pub }}</td>
+                <td>{{ livro.status }}</td>
+                <td>
+                    <a href="{% url 'delete' livro.id %}" class="btn btn-danger">Excluir</a>
+                </td>
+                <td><a href="{% url 'editar' livro.id %}" class="btn btn-warning">Editar</a></td>
+ btn-warning">Editar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <!-- Incluindo jQuery e Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popp

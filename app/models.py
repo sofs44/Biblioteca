@@ -1,4 +1,3 @@
-# Create your models here.
 from django.db import models
 
 class Cidade(models.Model):
@@ -63,7 +62,7 @@ class Livro(models.Model):
     editora = models.ForeignKey(Editora, on_delete=models.CASCADE, verbose_name="Editora do livro")
     genero = models.ForeignKey(Genero, on_delete=models.CASCADE, verbose_name="Gênero do livro")
     preco = models.IntegerField(verbose_name="Preço do livro")
-    data_plub = models.DateField(verbose_name="Data de publicação do livro")
+    data_pub = models.DateField(verbose_name="Data de publicação do livro")
     status = models.BooleanField(verbose_name="Status do livro")
 
     def __str__(self):
@@ -72,3 +71,16 @@ class Livro(models.Model):
     class Meta:
         verbose_name = "Livro"
         verbose_name_plural = "Livros"
+
+class Emprestimo(models.Model):
+    livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
+    leitor = models.ForeignKey(Leitor, on_delete=models.CASCADE)
+    data_emprestimo = models.DateField()
+    data_devolucao = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.livro.nome} emprestado para {self.leitor.nome}"
+
+    class Meta:
+        verbose_name = "Empréstimo"
+        verbose_name_plural = "Empréstimos"

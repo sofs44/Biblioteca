@@ -1,11 +1,16 @@
-from django.shortcuts import 
-render, redirect, get_object_or_404
-from .models import *
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Emprestimo, Livro, Leitor, Genero, Cidade, Autor, Editora
 from django.views import View
+from django.contrib import messages
+from .forms import LivroForm
+
+
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'index.html')
+        livros = Livro.objects.all()
+        return render(request, 'index.html', {'livros': livros})
+
 
 
 class LivrosView(View):
@@ -51,3 +56,36 @@ class GenerosView(View):
     def get(self, request, *args, **kwargs):
         generos = Genero.objects.all()
         return render(request, 'genero.html', {'generos': generos})
+
+#Pra deletar
+class DeleteLivroView(View):
+    def get(self, request, id, *args, **kwargs):
+        livro = get_object_or_404(Livro, id=id)
+        livro.delete()
+        messages.success(request, 'Livro excluído com sucesso!')
+        return redirect('index')
+    
+class EditarLivroView(View):
+    template_name = 'editar_livro.html'
+
+    def get(self, request, id, *args, **kwargs):
+        livro = get_object_or_404(Livro, id=id)
+        form = LivroForm(instance=livro)
+        return render(request, self.template_name, {
+            'livro': livro,
+            'form': form
+        })
+
+    def post(self, request, id, *args, **kwargs):
+        livro = get_object_or_404(Livro, id=id)
+        form = LivroForm(request.POST, instance=livro)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'As edições foram salvas com sucesso.')
+            return redirect('editar', id=id)  # Redirecionar de volta para a página de edição
+        else:
+            messages.error(request, 'Corrija os erros no formulário antes de enviar novamente.')
+            return render(request, self.template_name, {
+                'livro': livro,
+                'form': form
+            })
