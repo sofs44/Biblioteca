@@ -80,19 +80,13 @@ navigation">
                 <td>{{ livro.nome }}</td>
                 <td>{{ livro.autor }}</td>
                 <td>{{ livro.editora }}</td>
-                <td>
-                    {% for genero in livro.genero.all %}
-                    {{ genero.nome }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </td>
+                <td>{{ livro.genero }}</td>
                 <td>{{ livro.preco }}</td>
                 <td>{{ livro.data_pub }}</td>
                 <td>{{ livro.status }}</td>
-                <td>
-                    <a href="{% url 'delete' livro.id %}" class="btn btn-danger">Excluir</a>
-                </td>
+                <td><a href="{% url 'delete' livro.id %}" class="btn btn-danger">Excluir</a></td>
                 <td><a href="{% url 'editar' livro.id %}" class="btn btn-warning">Editar</a></td>
- btn-warning">Editar</a></td>
+
             </tr>
             {% endfor %}
         </tbody>
